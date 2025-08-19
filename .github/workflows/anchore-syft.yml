@@ -23,14 +23,14 @@ jobs:
       uses: anchore/sbom-action@bb716408e75840bbb01e839347cd213767269d4a
       with:
         image: "localbuild/frontend:latest"
-        artifact-name: sbom-frontend.spdx.json
+        artifact-name: sbom-frontend
 
     # Generate SBOM for backend
     - name: Generate SBOM for backend
       uses: anchore/sbom-action@bb716408e75840bbb01e839347cd213767269d4a
       with:
         image: "localbuild/backend:latest"
-        artifact-name: sbom-backend.spdx.json
+        artifact-name: sbom-backend
 
     # Upload both SBOMs as artifacts
     - name: Upload SBOMs as artifacts
