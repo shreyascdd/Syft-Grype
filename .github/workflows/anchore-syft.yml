@@ -32,4 +32,11 @@ jobs:
         image: "localbuild/backend:latest"
         artifact-name: sbom-backend
 
+    - name: Upload SBOMs
+      uses: actions/upload-artifact@v4
+      with:
+        name: sboms
+        path: |
+          sbom-frontend.spdx.json
+          sbom-backend.spdx.json
     
