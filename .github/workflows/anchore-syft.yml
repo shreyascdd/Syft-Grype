@@ -24,6 +24,7 @@ jobs:
       with:
         image: "localbuild/frontend:latest"
         artifact-name: sbom-frontend
+        output-file: sbom-frontend.spdx.json
 
     # Generate SBOM for backend
     - name: Generate SBOM for backend
@@ -31,6 +32,7 @@ jobs:
       with:
         image: "localbuild/backend:latest"
         artifact-name: sbom-backend
+        output-file: sbom-backend.spdx.json
 
     - name: Upload SBOMs
       uses: actions/upload-artifact@v4
