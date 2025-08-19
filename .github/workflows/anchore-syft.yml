@@ -1,0 +1,42 @@
+name: Anchore Syft SBOM scan
+
+on:
+  workflow_dispatch:   # only manual trigger
+
+jobs:
+  Anchore-Build-Scan:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v4
+
+    # Build frontend image
+    - name: Build frontend Docker image
+      run: docker build ./frontend --file frontend/Dockerfile --tag localbuild/frontend:latest
+
+    # Build backend image
+    - name: Build backend Docker image
+      run: docker build ./backend --file backend/Dockerfile --tag localbuild/backend:latest
+
+    # Generate SBOM for frontend
+    - name: Generate SBOM for frontend
+      uses: anchore/sbom-action@bb716408e75840bbb01e839347cd213767269d4a
+      with:
+        image: "localbuild/frontend:latest"
+        artifact-name: sbom-frontend.spdx.json
+
+    # Generate SBOM for backend
+    - name: Generate SBOM for backend
+      uses: anchore/sbom-action@bb716408e75840bbb01e839347cd213767269d4a
+      with:
+        image: "localbuild/backend:latest"
+        artifact-name: sbom-backend.spdx.json
+
+    # Upload both SBOMs as artifacts
+    - name: Upload SBOMs as artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: sbom-reports
+        path: |
+          sbom-frontend.spdx.json
+          sbom-backend.spdx.json
